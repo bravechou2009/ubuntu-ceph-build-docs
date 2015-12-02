@@ -47,3 +47,8 @@ The checkout is in /ceph, so:
 Now view the docs again.
 
 Repeat as necessary.
+
+When you're done, stop the container:
+::
+    $ docker stop ceph
+
