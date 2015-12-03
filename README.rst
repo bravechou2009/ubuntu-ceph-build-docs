@@ -10,9 +10,12 @@ So you want to hack on the Ceph documentation. Here's how:
 Learn about reStructuredText:
 
 * `reStructuredText Primer`_
+* `reStructuredText Documentation`_
 * `reStructuredText Markup Specification`_
 
 .. _`reStructuredText Primer`: http://sphinx-doc.org/rest.html
+.. _`reStructuredText Documentation`: 
+   http://docutils.sourceforge.net/rst.html
 .. _`reStructuredText Markup Specification`:
    docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
 
