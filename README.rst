@@ -24,7 +24,7 @@ Build docker image:
 
 Run container (not safe!):
 ::
-    $ sudo docker run -d -p 80:80 --name ceph ubuntu-ceph
+    $ sudo docker run -d -p 80:80 --name cephdoc ubuntu-ceph-build-docs
 
 Test that you can view the docs:
 ::
@@ -35,7 +35,7 @@ Make changes to your fork and branch.
 
 To rebuild the docs, go into the container:
 ::
-    $ docker exec -it ceph bash
+    $ docker exec -it cephdoc bash
     root@f97749ede2ed:/#
 
 The checkout is in /ceph, so:
@@ -50,5 +50,5 @@ Repeat as necessary.
 
 When you're done, stop the container:
 ::
-    $ docker stop ceph
+    $ docker stop cephdoc
 
