@@ -7,6 +7,15 @@ Dockerized environment for building Ceph documentation
 
 So you want to hack on the Ceph documentation. Here's how:
 
+Learn about reStructuredText:
+
+* `reStructuredText Primer`_
+* `reStructuredText Markup Specification`_
+
+.. _`reStructuredText Primer`: http://sphinx-doc.org/rest.html
+.. _`reStructuredText Markup Specification`:
+   docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+
 Install docker. Make sure the service is running and you are in the docker
 group.
 
