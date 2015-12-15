@@ -30,15 +30,15 @@ RUN chmod 755 /usr/bin/ditaa
 
 # clone the "smithfarm" repo (replace this with your fork)
 RUN git clone git://github.com/smithfarm/ceph.git
-RUN cd ceph
 
 # add the official ceph repo as a remote, and fetch
+WORKDIR /ceph
 RUN git remote add ceph https://github.com/ceph/ceph.git
 RUN git fetch ceph
 RUN git merge ceph/master
 
 # build the docs
-RUN /ceph/admin/build-doc
+RUN admin/build-doc
 
 # configure and run lighty
 RUN mv /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.ORIG
