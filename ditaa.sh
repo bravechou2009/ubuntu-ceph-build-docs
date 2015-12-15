@@ -1,2 +1,2 @@
 #!/bin/sh
-exec java -jar /usr/share/ditaa/ditaa.jar
+exec java -jar /usr/share/ditaa/ditaa.jar "$@"
