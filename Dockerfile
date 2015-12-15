@@ -32,16 +32,11 @@ RUN rm /usr/bin/ditaa
 COPY ditaa.sh /usr/bin/ditaa
 RUN chmod 755 /usr/bin/ditaa
 
-# clone the "smithfarm" repo (replace this with your fork)
-RUN git clone git://github.com/smithfarm/ceph.git
-
-# add the official ceph repo as a remote, and fetch
-WORKDIR /ceph
-RUN git remote add ceph https://github.com/ceph/ceph.git
-RUN git fetch ceph
-RUN git merge ceph/master
+# clone the "smithfarm" repo (edit to use YOUR fork and branch)
+RUN git clone -b wip-14070 git://github.com/smithfarm/ceph.git
 
 # build the docs
+WORKDIR /ceph
 RUN admin/build-doc
 
 # configure and run lighty
