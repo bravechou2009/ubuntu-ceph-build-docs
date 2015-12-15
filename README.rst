@@ -29,39 +29,54 @@ Clone this repo and cd in: ::
     $ git clone git://github.com/smithfarm/ubuntu-ceph-build-docs
     $ cd ubuntu-ceph-build-docs
 
-Edit the Dockerfile. Change "smithfarm/ceph" to your fork.
+Edit the Dockerfile. Change the following line so it points to **your**
+fork and branch: ::
 
+    RUN git clone -b wip-14070 git://github.com/smithfarm/ceph.git
+
+If you don't have a fork, you can try building the master docs by changing
+the line to: ::
+
+    RUN git clone -b master git://github.com/ceph/ceph.git
+    
 Build docker image: ::
 
     $ docker build -t ubuntu-ceph-build-docs .
 
-Run container (not safe!): ::
+Run the container (16289 is the host port where the built documentation
+will be accessible via HTTP - change it to whatever you like): ::
 
-    $ sudo docker run -d -p 80:80 --name cephdoc ubuntu-ceph-build-docs
+    $ docker run -d -p 16289:80 --name cephdoc ubuntu-ceph-build-docs
 
 Test that you can view the docs: ::
 
-    $ curl http://localhost
-    $ firefox http://localhost
+    $ curl http://localhost:16289
+    $ firefox http://localhost:16289
 
-Make changes to your fork.
-
-To rebuild the docs, go into the container: ::
+If you are working on the documentation, you can push modifications to the
+WIP (Work In Progress) branch in your fork, and rebuild the docs to view
+your changes. After you have pushed some new commits, go into the
+container: ::
 
     $ docker exec -it cephdoc bash
-    root@f97749ede2ed:/#
+    root@f97749ede2ed:/ceph#
 
-The checkout is in /ceph, so: ::
+Run :code:`git pull` to pull your updated wip branch: ::
 
-    root@f97749ede2ed:/# cd ceph
     root@f97749ede2ed:/ceph# git pull
+
+And run :code:`admin/build-docs` to rebuild the docs: ::
+
     root@f97749ede2ed:/ceph# admin/build-docs
 
-Now view the docs again.
-
-Repeat as necessary.
+Now reload your browser page. Repeat this process as many times you like
+until your work is finished.
 
 When you're done, stop the container: ::
 
     $ docker stop cephdoc
+
+Or remove it completely: ::
+
+    $ docker rm -f cephdoc
 
