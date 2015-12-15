@@ -8,7 +8,7 @@ RUN sed -i -e 's|http://archive.ubuntu|http://nova.clouds.archive.ubuntu|' /etc/
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y update
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 
-# install admin/build-doc dependencies
+# install basic admin/build-doc dependencies
 RUN DEBIAN_FRONTEND=noninteractive apt-get --yes install \
     git \
     python-dev \
@@ -20,9 +20,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get --yes install \
     ditaa \
     graphviz \
     ant \
-    lighttpd \
+    lighttpd
+
+# install additional admin/build-doc dependencies
+RUN DEBIAN_FRONTEND=noninteractive apt-get --yes install \
     cython \
-    python-ceph
+    librbd-dev
 
 # fix ditaa packaging mishap
 RUN rm /usr/bin/ditaa
