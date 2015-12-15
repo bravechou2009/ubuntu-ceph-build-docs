@@ -21,6 +21,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get --yes install \
     graphviz \
     ant \
     lighttpd \
+    cython \
     python-ceph
 
 # fix ditaa packaging mishap
