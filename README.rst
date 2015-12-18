@@ -11,10 +11,16 @@ This README describes how to use :code:`ubuntu-ceph-build-docs` to
 * build the Ceph documentation
 * start :code:`lighttpd` to serve the built documentation
 
-all fully automated in a Docker container (based on Ubuntu 14.04). 
+all in semi-automated fashion. Since everything takes place in a
+self-contained Docker container
 
-Step-by-step instructions
-=========================
+* the builds are repeatable 
+* the build artifacts do not clutter your system
+* you don't have to worry about build dependencies: these are taken care of
+  within the Docker image
+
+Preparation
+===========
 
 Install Docker. Make sure the service is running and you are in the
 :code:`docker` group.
@@ -30,6 +36,9 @@ repo and build the image yourself: ::
     $ git clone git://github.com/smithfarm/ubuntu-ceph-build-docs
     $ cd ubuntu-ceph-build-docs
     $ docker build -t ubuntu-ceph-build-docs .
+
+Running the container
+=====================
 
 Once you have the Docker image, run the container (16289 is the host port
 where the built documentation will be accessible via HTTP - change it to
@@ -67,6 +76,9 @@ specified in the :code:`docker run` command, above: ::
 
     $ firefox http://localhost:16289
 
+Support for incremental hacking
+===============================
+
 Now you can hack on the documentation and push incremental modifications to
 the WIP (Work In Progress) branch in your fork. At any time, you can enter
 the container, pull your changes, and rebuild the docs. The workflow looks
@@ -80,6 +92,9 @@ like this: ::
 
 Now reload your browser page. Repeat this process as many times you like
 until your work is finished.
+
+Cleanup
+=======
 
 When you're done, stop the container: ::
 
