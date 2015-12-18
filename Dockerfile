@@ -32,16 +32,12 @@ RUN rm /usr/bin/ditaa
 COPY ditaa.sh /usr/bin/ditaa
 RUN chmod 755 /usr/bin/ditaa
 
-# clone the "smithfarm" repo (edit to use YOUR fork and branch)
-RUN git clone -b wip-14070 git://github.com/smithfarm/ceph.git
-
-# build the docs
-WORKDIR /ceph
-RUN admin/build-doc
-
-# configure and run lighty
+# configure lighty
 RUN mv /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.ORIG
 COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
 EXPOSE 80
 
-CMD lighttpd -D -f /etc/lighttpd/lighttpd.conf
+# hand over to runme.sh
+COPY runme.sh /tmp/runme.sh
+RUN install -o root -g root -m 755 /tmp/runme.sh /runme.sh
+ENTRYPOINT [ "/runme.sh" ]
