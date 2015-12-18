@@ -1,72 +1,81 @@
 ======================
 ubuntu-ceph-build-docs
 ======================
-------------------------------------------------------
-Dockerized environment for building Ceph documentation
-------------------------------------------------------
+------------------------------------------------------------------
+Dockerized environment for building and viewing Ceph documentation
+------------------------------------------------------------------
 
-So you want to hack on the Ceph documentation. Here's how:
+This README describes how to use :code:`ubuntu-ceph-build-docs` to
 
-Learn about reStructuredText:
+* clone the :code:`ceph.git` GitHub repository from an arbitrary fork and branch
+* build the Ceph documentation
+* start :code:`lighttpd` to serve the built documentation
 
-* `reStructuredText Primer`_
-* `reStructuredText Documentation`_
-* `reStructuredText Markup Specification`_
+all fully automated in a Docker container (based on Ubuntu 14.04). 
 
-.. _`reStructuredText Primer`: http://sphinx-doc.org/rest.html
-.. _`reStructuredText Documentation`: 
-   http://docutils.sourceforge.net/rst.html
-.. _`reStructuredText Markup Specification`:
-   docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+Step-by-step instructions
+=========================
 
-Install docker. Make sure the service is running and you are in the docker
-group.
+Install Docker. Make sure the service is running and you are in the
+:code:`docker` group.
 
-Fork the `ceph/ceph` project on GitHub.
+The easiest way to obtain this software is to pull the Docker image from
+Docker Hub: ::
 
-Clone this repo and cd in: ::
+    $ docker pull smithfarm/ubuntu-ceph-build-docs:latest
+
+If that is not appropriate for some reason, you will have to clone this
+repo and build the image yourself: ::
 
     $ git clone git://github.com/smithfarm/ubuntu-ceph-build-docs
     $ cd ubuntu-ceph-build-docs
-
-Edit the Dockerfile. Change the following line so it points to **your**
-fork and branch: ::
-
-    RUN git clone -b wip-14070 git://github.com/smithfarm/ceph.git
-
-If you don't have a fork, you can try building the master docs by changing
-the line to: ::
-
-    RUN git clone -b master git://github.com/ceph/ceph.git
-    
-Build docker image: ::
-
     $ docker build -t ubuntu-ceph-build-docs .
 
-Run the container (16289 is the host port where the built documentation
-will be accessible via HTTP - change it to whatever you like): ::
+Once you have the Docker image, run the container (16289 is the host port
+where the built documentation will be accessible via HTTP - change it to
+whatever you like): ::
 
     $ docker run -d -p 16289:80 --name cephdoc ubuntu-ceph-build-docs
 
-Test that you can view the docs: ::
+The default is to build the documentation from the upstream master
+branch. If you would like to build from an arbitrary fork and/or branch,
+append either or both of the following arguments to the end of the
+:code:`docker run` command: ::
 
-    $ curl http://localhost:16289
+    --fork $GITHUB_USER
+    --branch $BRANCH
+
+E.g.: ::
+
+    $ docker run -d -p 16289:80 --name cephdoc ubuntu-ceph-build-docs \
+    --fork smithfarm \
+    --branch wip-14070
+
+This will cause the Ceph fork at http://github.com/smithfarm/ceph.git to be
+cloned and the documentation in the :code:`wip-14070` branch within that
+fork to be built. 
+
+Cloning a :code:`ceph.git` repo and building the docs does takes time to
+complete. Use the following command to monitor progress: ::
+
+    $ docker exec -it cephdoc tail -f runme.out
+
+Once the script finishes, hit CTRL-C to return to your shell prompt. The
+last thing the script does is run :code:`lighttpd` in the container. The
+Ceph documentation that was just built can now be viewed on the port you
+specified in the :code:`docker run` command, above: ::
+
     $ firefox http://localhost:16289
 
-If you are working on the documentation, you can push modifications to the
-WIP (Work In Progress) branch in your fork, and rebuild the docs to view
-your changes. After you have pushed some new commits, go into the
-container: ::
+Now you can hack on the documentation and push incremental modifications to
+the WIP (Work In Progress) branch in your fork. At any time, you can enter
+the container, pull your changes, and rebuild the docs. The workflow looks
+like this: ::
 
+    $ git push
     $ docker exec -it cephdoc bash
-    root@f97749ede2ed:/ceph#
-
-Run :code:`git pull` to pull your updated wip branch: ::
-
+    root@f97749ede2ed:/# cd ceph
     root@f97749ede2ed:/ceph# git pull
-
-And run :code:`admin/build-docs` to rebuild the docs: ::
-
     root@f97749ede2ed:/ceph# admin/build-docs
 
 Now reload your browser page. Repeat this process as many times you like
