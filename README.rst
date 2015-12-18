@@ -29,16 +29,6 @@ Clone this repo and cd in: ::
     $ git clone git://github.com/smithfarm/ubuntu-ceph-build-docs
     $ cd ubuntu-ceph-build-docs
 
-Edit the Dockerfile. Change the following line so it points to **your**
-fork and branch: ::
-
-    RUN git clone -b wip-14070 git://github.com/smithfarm/ceph.git
-
-If you don't have a fork, you can try building the master docs by changing
-the line to: ::
-
-    RUN git clone -b master git://github.com/ceph/ceph.git
-    
 Build docker image: ::
 
     $ docker build -t ubuntu-ceph-build-docs .
@@ -48,9 +38,31 @@ will be accessible via HTTP - change it to whatever you like): ::
 
     $ docker run -d -p 16289:80 --name cephdoc ubuntu-ceph-build-docs
 
-Test that you can view the docs: ::
+This causes the :code:`runme.sh` script to be run with the defaults,
+meaning that it will build the documentation from the upstream master
+branch. If you would like to build from a different fork and/or branch,
+append either or both of the following arguments to the end of the
+:code:`docker run` command: ::
 
-    $ curl http://localhost:16289
+    --fork $GITHUB_USER
+    --branch $BRANCH
+
+E.g.: ::
+
+    $ docker run -d -p 16289:80 --name cephdoc ubuntu-ceph-build-docs \
+    --fork smithfarm \
+    --branch wip-14070
+
+This will start the container and run the :code:`runme.sh` script inside
+it. Since the script clones the :code:`ceph.git` repo and builds the docs,
+it takes time to complete. Use the following command to monitor progress: ::
+
+    $ docker exec -it cephdoc tail -f runme.out
+
+Once the script finishes, hit CTRL-C to return to your shell prompt. The
+last thing the script does is run :code:`lighttpd` in the container. The
+Ceph documentation that was just built can now be viewed. ::
+
     $ firefox http://localhost:16289
 
 If you are working on the documentation, you can push modifications to the
