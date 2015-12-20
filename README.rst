@@ -41,7 +41,7 @@ Running the container
 =====================
 
 Once you have the Docker image, run the container inside your local clone
-of the Ceph source code. Use the following command:
+of the Ceph source code. Use the following command: ::
 
     $ docker run --rm -it \
       $(w=$(git rev-parse --show-toplevel 2>/dev/null) && echo "-v $w:$w -w $w") \
