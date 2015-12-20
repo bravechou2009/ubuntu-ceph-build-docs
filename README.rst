@@ -40,67 +40,23 @@ repo and build the image yourself: ::
 Running the container
 =====================
 
-Once you have the Docker image, run the container (16289 is the host port
-where the built documentation will be accessible via HTTP - change it to
-whatever you like): ::
+Once you have the Docker image, run the container inside your local clone
+of the Ceph source code. Use the following command:
 
-    $ docker run -d -p 16289:80 --name cephdoc ubuntu-ceph-build-docs
+    $ docker run --rm -it \
+      $(w=$(git rev-parse --show-toplevel 2>/dev/null) && echo "-v $w:$w -w $w") \
+      --env USER_ID=$(id -u) --env USER_NAME=$(id -un) \
+      ubuntu-ceph-build-docs
 
-The default is to build the documentation from the upstream master
-branch. If you would like to build from an arbitrary fork and/or branch,
-append either or both of the following arguments to the end of the
-:code:`docker run` command: ::
+If all goes well, the documentation will be built inside the
+:code:`doc/output/html/` directory and the script will output a
+:code:`file://` URI that you can paste into your browser to view the
+documentation.
 
-    --fork $GITHUB_USER
-    --branch $BRANCH
+Tips
+====
 
-E.g.: ::
-
-    $ docker run -d -p 16289:80 --name cephdoc ubuntu-ceph-build-docs \
-    --fork smithfarm \
-    --branch wip-14070
-
-This will cause the Ceph fork at http://github.com/smithfarm/ceph.git to be
-cloned and the documentation in the :code:`wip-14070` branch within that
-fork to be built. 
-
-Cloning a :code:`ceph.git` repo and building the docs does takes time to
-complete. Use the following command to monitor progress: ::
-
-    $ docker exec -it cephdoc tail -f runme.out
-
-Once the script finishes, hit CTRL-C to return to your shell prompt. The
-last thing the script does is run :code:`lighttpd` in the container. The
-Ceph documentation that was just built can now be viewed on the port you
-specified in the :code:`docker run` command, above: ::
-
-    $ firefox http://localhost:16289
-
-Support for incremental hacking
-===============================
-
-Now you can hack on the documentation and push incremental modifications to
-the WIP (Work In Progress) branch in your fork. At any time, you can enter
-the container, pull your changes, and rebuild the docs. The workflow looks
-like this: ::
-
-    $ git push
-    $ docker exec -it cephdoc bash
-    root@f97749ede2ed:/# cd ceph
-    root@f97749ede2ed:/ceph# git pull
-    root@f97749ede2ed:/ceph# admin/build-docs
-
-Now reload your browser page. Repeat this process as many times you like
-until your work is finished.
-
-Cleanup
-=======
-
-When you're done, stop the container: ::
-
-    $ docker stop cephdoc
-
-Or remove it completely: ::
-
-    $ docker rm -f cephdoc
+The :code:`docker run` command above is long and complicated. However, it
+can easily be made into an alias or a function. The file
+:code:`review-docs.sh` illustrates one way to accomplish this.
 
