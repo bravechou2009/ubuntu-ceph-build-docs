@@ -32,12 +32,6 @@ RUN rm /usr/bin/ditaa
 COPY ditaa.sh /usr/bin/ditaa
 RUN chmod 755 /usr/bin/ditaa
 
-# configure lighty
-RUN mv /etc/lighttpd/lighttpd.conf /etc/lighttpd/lighttpd.conf.ORIG
-COPY lighttpd.conf /etc/lighttpd/lighttpd.conf
-EXPOSE 80
-
-# hand over to runme.sh
-COPY runme.sh /tmp/runme.sh
-RUN install -o root -g root -m 755 /tmp/runme.sh /runme.sh
-ENTRYPOINT [ "/runme.sh" ]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod 755 /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]
