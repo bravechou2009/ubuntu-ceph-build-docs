@@ -52,7 +52,7 @@ If all goes well, the documentation will be built inside the
 :code:`build-doc/output/html/` directory and the script will output a
 :code:`file://` URI that you can paste into your browser to view the
 documentation. Alternatively, you can start a simple webserver in that
-directory using a command like this:
+directory using a command like this: ::
 
     $ cd build-doc/output/html/
     $ python -m SimpleHTTPServer 5000
