@@ -57,7 +57,7 @@ directory using a command like this:
     $ cd build-doc/output/html/
     $ python -m SimpleHTTPServer 5000
 
-And then point your browser at `http://localhost:5000`.
+And then point your browser at :code:`http://localhost:5000`.
 
 Tips
 ====
@@ -65,4 +65,9 @@ Tips
 The :code:`docker run` command above is long and complicated. However, it
 can easily be made into an alias or a function. The file
 :code:`review-docs.sh` illustrates one way to accomplish this.
+
+If you want a more robust way of running :code:`SimpleHTTPServer`, take a
+look at pyserv_.
+
+.. _pyserv: http://recipes.readthedocs.org/en/latest/pyserv.html
 
