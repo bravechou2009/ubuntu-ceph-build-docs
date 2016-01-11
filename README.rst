@@ -49,9 +49,15 @@ of the Ceph source code. Use the following command: ::
       ubuntu-ceph-build-docs
 
 If all goes well, the documentation will be built inside the
-:code:`doc/output/html/` directory and the script will output a
+:code:`build-doc/output/html/` directory and the script will output a
 :code:`file://` URI that you can paste into your browser to view the
-documentation.
+documentation. Alternatively, you can start a simple webserver in that
+directory using a command like this:
+
+    $ cd build-doc/output/html/
+    $ python -m SimpleHTTPServer 5000
+
+And then point your browser at `http://localhost:5000`.
 
 Tips
 ====
