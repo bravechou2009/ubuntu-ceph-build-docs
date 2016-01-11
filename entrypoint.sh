@@ -6,5 +6,5 @@
 #
 
 adduser --disabled-password --gecos ReviewDocs --quiet --uid $USER_ID $USER_NAME
-sudo --set-home --preserve-env --user $USER_NAME admin/build-doc
+sudo --set-home --preserve-env --user $USER_NAME admin/build-doc || exit 0
 echo "Point browser to: $(pwd)/build-doc/output/html/index.html"
