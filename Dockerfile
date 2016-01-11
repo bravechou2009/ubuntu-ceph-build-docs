@@ -4,12 +4,13 @@ MAINTAINER Nathan Cutler <presnypreklad@gmail.com>
 # nova.clouds.archive.ubuntu.com is faster
 RUN sed -i -e 's|http://archive.ubuntu|http://nova.clouds.archive.ubuntu|' /etc/apt/sources.list
 
+ENV DEBIAN_FRONTEND noninteractive
 # install latest updates
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y update
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
+RUN apt-get -y update
+RUN apt-get -y upgrade
 
 # install basic admin/build-doc dependencies
-RUN DEBIAN_FRONTEND=noninteractive apt-get --yes install \
+RUN apt-get --yes install \
     git \
     python-dev \
     python-pip \
@@ -23,7 +24,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get --yes install \
     lighttpd
 
 # install additional admin/build-doc dependencies
-RUN DEBIAN_FRONTEND=noninteractive apt-get --yes install \
+RUN apt-get --yes install \
     cython \
     librbd-dev
 
