@@ -5,12 +5,9 @@ MAINTAINER Nathan Cutler <presnypreklad@gmail.com>
 RUN sed -i -e 's|http://archive.ubuntu|http://nova.clouds.archive.ubuntu|' /etc/apt/sources.list
 
 ENV DEBIAN_FRONTEND noninteractive
-# install latest updates
-RUN apt-get -y update
-RUN apt-get -y upgrade
 
-# install basic admin/build-doc dependencies
-RUN apt-get --yes install \
+# install latest updates and the required packages
+RUN apt-get -y update && apt-get --yes install \
     git \
     python-dev \
     python-pip \
@@ -21,10 +18,7 @@ RUN apt-get --yes install \
     ditaa \
     graphviz \
     ant \
-    lighttpd
-
-# install additional admin/build-doc dependencies
-RUN apt-get --yes install \
+    lighttpd \
     cython \
     librbd-dev
 
